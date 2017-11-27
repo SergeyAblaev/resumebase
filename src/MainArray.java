@@ -6,11 +6,11 @@ import java.io.InputStreamReader;
  * Test for com.urise.webapp.storage.ArrayStorage
  */
 public class MainArray {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();  // создаем новый storaje
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Resume r;
+        Resume r;   // обьявили переменную, тип=класс resume
         while (true) {
             System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
@@ -67,4 +67,5 @@ public class MainArray {
         }
         System.out.println("----------------------------");
     }
+
 }
