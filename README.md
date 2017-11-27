@@ -1,4 +1,4 @@
-﻿# "База данных резюме" (обновлено и переработано)
+﻿# "База данных резюме" (обновлено и переработано).
 
 ## Разработка Web приложения "База данных резюме"
   -  используем: Java 8, <a href="https://zeroturnaround.com/rebellabs/java-tools-and-technologies-landscape-2016-trends/#java-ides-adoption">IntelliJ IDEA</a>,
