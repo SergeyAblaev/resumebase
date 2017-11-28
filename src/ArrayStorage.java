@@ -6,32 +6,58 @@ public class ArrayStorage {
 
     //добавлю переменную - в которой буду хранить колич значимых элементов в массиве (храниим от 0 до count)
     private int count = 0;  // меняем только из методов!
+
     void clear() {
+
     }
 
     void save(Resume r) {
-        // r - ссылка на новый элемент класса Resume содержащий резюме (поле uuid)
-        // тут не пойму как добавлять в массив  - в какой индекс писать?
-        storage[count]=r;
+        storage[count] = r;  // r - ссылка на новый элемент класса Resume содержащий резюме (поле uuid)
         count++;
     }
 
+    private int getInt(String uuid) {
+        //ищем знач массива, если нет - вернем минус один ?
+        for (int i=0; i<count; i++){
+            if (storage[i].uuid==uuid) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     Resume get(String uuid) {
-       // НАПИШИ МЕТОД ПОИСКА ЭЛЕМЕНТА В МАССИВЕ ПО ЕГО ГУИДУ
-        return null;
+        Resume foundElement;
+        int i = getInt(uuid);
+        if (i == -1) {
+            foundElement = null;   // элемент не найден
+        } else {
+            foundElement = storage[i];
+        }
+        return foundElement;
     }
 
     void delete(String uuid) {
-        // тут напиши сжатие - при удалении элемента сдвигаем все элементы от текущего до 'count'
+        // при удалении элемента сдвигаем все элементы от текущего до 'count'
+        int index = getInt(uuid);
+        if (index == -1) {
+            // элемент не найден
+        } else {
+            storage[index]=null; //удаляем: ВОПРОС - стоит ли так явно прописывать стирание элем. для удобства понимания программы?
+                                 // ведь нииже я все равно затру эту ячейку при уплотнении
+            // начинаем переносить элементы из i+1 в i пока i+1<=count !!
+            for (int i=index; i<count; i++){
+                storage[i]=storage[i+1];
+            }
+            storage[count] = null;
+        }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        //return new Resume[0];  инициализировать через new надо?!
-        // напиши выборку из массива от 0 до count - где содержимое != null
-        Resume[] returnResume = new Resume[count];   // init array
+        Resume[] returnResume = new Resume[count];   // ВОПРОС при каждом вызове создавать массив через new - правильно?
 /*
         for (int i=0; i<count; i++) { returnResume[i]=storage[i]; }  //я написал так но умная IDEA предложила метод arraycopy (ниже)
  */
@@ -40,7 +66,7 @@ public class ArrayStorage {
     }
 
     int size() {
-        return 0;
+        return count; //тут просто )
     }
 
 }

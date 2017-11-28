@@ -12,7 +12,7 @@ public class MainArray {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;   // обьявили переменную, тип=класс resume
         while (true) {
-            System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | clear | exit): ");
+            System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | clear | exit | test): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
             if (params.length < 1 || params.length > 2) {
                 System.out.println("Неверная команда.");
@@ -48,6 +48,11 @@ public class MainArray {
                     break;
                 case "exit":
                     return;
+                case "test":    // тестировал массивы - УДАЛИ!
+                    int test1[][]= new int[5][8];
+                    System.out.println(test1.length);
+                    System.out.println(test1[1].length);
+                    break;
                 default:
                     System.out.println("Неверная команда.");
                     break;
