@@ -8,7 +8,7 @@ public class ArrayStorage {
     private int count = 0;  // меняем только из методов!
 
     void clear() {
-
+    count = 0; //тут просто )
     }
 
     void save(Resume r) {
@@ -50,6 +50,7 @@ public class ArrayStorage {
                 storage[i]=storage[i+1];
             }
             storage[count] = null;
+            --count;
         }
     }
 
