@@ -12,9 +12,9 @@ public class MainArray {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;   // обьявили переменную, тип=класс resume
         while (true) {
-            System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | clear | exit ): ");
+            System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | update uuid | clear | exit ): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (params.length < 1 || params.length > 2) {
+            if (params.length < 1 || params.length > 3) {
                 System.out.println("Неверная команда.");
                 continue;
             }
@@ -34,6 +34,30 @@ public class MainArray {
                     r.uuid = uuid;
                     ARRAY_STORAGE.save(r);
                     printAll();
+                    break;
+                case "update":
+                    // найдем элемент для обновлениия
+                    int i = ARRAY_STORAGE.getInt(uuid);
+                    if (i != -1) {
+                       //если найден - то запросим новый УУИД у пользователя и обновим
+                        System.out.print("Введите новый uuid | пробел - отмена обновления ): ");
+                        params = reader.readLine().trim().toLowerCase().split(" ");
+                        if (params.length != 1) {
+                            System.out.println("Неверная команда.");
+                            break;
+                        } else if (params[0].equals("")) {
+                            break;
+                        } else {
+                            //  uuid = params[1].intern();
+                            // uuidNew
+                            r = new Resume();
+                            r.uuid = params[0];
+                          ARRAY_STORAGE.update(i, r );
+                        }
+                    }
+                    else {
+                            System.out.println("uuid не найден");
+                        }
                     break;
                 case "delete":
                     ARRAY_STORAGE.delete(uuid);
