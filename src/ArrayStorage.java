@@ -16,6 +16,10 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
+        if (size > storage.length) {
+            System.out.println("база данных заполнена. невозможно записать!");
+         return;
+        }
         storage[size] = r;  // r - ссылка на новый элемент класса Resume содержащий резюме (поле uuid)
         size++;
     }
@@ -26,7 +30,7 @@ public class ArrayStorage {
     int getInt(String uuid) {
         //ищем знач массива, если нет - вернем минус один ?
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid == uuid) {
+            if (storage[i].uuid.equals(uuid)) {
                 return i;
             }
         }

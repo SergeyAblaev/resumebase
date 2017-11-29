@@ -8,9 +8,18 @@ import java.io.InputStreamReader;
 public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();  // создаем новый storaje
 
+    static int checkAbsence(String uuid) {
+        int i = ARRAY_STORAGE.getInt(uuid);
+        if (i == -1) {
+            System.out.println("такого элемента нет!");
+        }
+        return i;
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Resume r;   // обьявили переменную, тип=класс resume
+        int i;
         while (true) {
             System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | update uuid | clear | exit ): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
@@ -30,40 +39,49 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
+                    i = ARRAY_STORAGE.getInt(uuid);
+                    if (i != -1) {
+                        System.out.println("такой элемент уже существует!");
+                        break;
+                    }
                     r = new Resume();
                     r.uuid = uuid;
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
                 case "update":
-                    // найдем элемент для обновлениия
-                    int i = ARRAY_STORAGE.getInt(uuid);
-                    if (i != -1) {
-                       //если найден - то запросим новый УУИД у пользователя и обновим
-                        System.out.print("Введите новый uuid | пробел - отмена обновления ): ");
-                        params = reader.readLine().trim().toLowerCase().split(" ");
-                        if (params.length != 1) {
-                            System.out.println("Неверная команда.");
-                            break;
-                        } else if (params[0].equals("")) {
-                            break;
-                        } else {
-                            //  uuid = params[1].intern();
-                            // uuidNew
-                            r = new Resume();
-                            r.uuid = params[0];
-                          ARRAY_STORAGE.update(i, r );
-                        }
+                    i = checkAbsence(uuid);
+                    if (i == -1) {
+                        break;
                     }
-                    else {
-                            System.out.println("uuid не найден");
-                        }
+                    // найдем элемент для обновлениия
+                    //если найден - то запросим новый УУИД у пользователя и обновим
+                    System.out.print("Введите новый uuid | пробел - отмена обновления ): ");
+                    params = reader.readLine().trim().toLowerCase().split(" ");
+                    if (params.length != 1) {
+                        System.out.println("Неверная команда.");
+                        break;
+                    } else if (params[0].equals("")) {
+                        break;
+                    } else {
+                        //  uuid = params[1].intern();
+                        // uuidNew
+                        r = new Resume();
+                        r.uuid = params[0];
+                        ARRAY_STORAGE.update(i, r);
+                    }
                     break;
                 case "delete":
+                    if (checkAbsence(uuid) == -1) {
+                        break;
+                    }
                     ARRAY_STORAGE.delete(uuid);
                     printAll();
                     break;
                 case "get":
+                    if (checkAbsence(uuid) == -1) {
+                        break;
+                    }
                     System.out.println(ARRAY_STORAGE.get(uuid));
                     break;
                 case "clear":
