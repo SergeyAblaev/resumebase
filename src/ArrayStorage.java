@@ -28,7 +28,6 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        Resume foundElement;
         int i = getInt(uuid);
         return (i==-1)?null:storage[i];
     }
