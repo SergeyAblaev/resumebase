@@ -1,29 +1,27 @@
+/*
+package ru.javawebinar.basejava;
+
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.ArrayStorage;
+import ru.javawebinar.basejava.storage.Storage;
+*/
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Test for com.urise.webapp.storage.ArrayStorage
+ * Test for ru.javawebinar.basejava.storage.ArrayStorage
  */
 public class MainArray {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();  // создаем новый storaje
-
-    static int checkAbsence(String uuid) {
-        int i = ARRAY_STORAGE.getInt(uuid);
-        if (i == -1) {
-            System.out.println("такого элемента нет!");
-        }
-        return i;
-    }
+    private final static Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Resume r;   // обьявили переменную, тип=класс resume
-        int i;
+        Resume r;
         while (true) {
-            System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | update uuid | clear | exit ): ");
+            System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | update uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
-            if (params.length < 1 || params.length > 3) {
+            if (params.length < 1 || params.length > 2) {
                 System.out.println("Неверная команда.");
                 continue;
             }
@@ -39,49 +37,22 @@ public class MainArray {
                     System.out.println(ARRAY_STORAGE.size());
                     break;
                 case "save":
-                    i = ARRAY_STORAGE.getInt(uuid);
-                    if (i != -1) {
-                        System.out.println("такой элемент уже существует!");
-                        break;
-                    }
                     r = new Resume();
-                    r.uuid = uuid;
+                    r.setUuid(uuid);
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
                 case "update":
-                    i = checkAbsence(uuid);
-                    if (i == -1) {
-                        break;
-                    }
-                    // найдем элемент для обновлениия
-                    //если найден - то запросим новый УУИД у пользователя и обновим
-                    System.out.print("Введите новый uuid | пробел - отмена обновления ): ");
-                    params = reader.readLine().trim().toLowerCase().split(" ");
-                    if (params.length != 1) {
-                        System.out.println("Неверная команда.");
-                        break;
-                    } else if (params[0].equals("")) {
-                        break;
-                    } else {
-                        //  uuid = params[1].intern();
-                        // uuidNew
-                        r = new Resume();
-                        r.uuid = params[0];
-                        ARRAY_STORAGE.update(i, r);
-                    }
+                    r = new Resume();
+                    r.setUuid(uuid);
+                    ARRAY_STORAGE.update(r);
+                    printAll();
                     break;
                 case "delete":
-                    if (checkAbsence(uuid) == -1) {
-                        break;
-                    }
                     ARRAY_STORAGE.delete(uuid);
                     printAll();
                     break;
                 case "get":
-                    if (checkAbsence(uuid) == -1) {
-                        break;
-                    }
                     System.out.println(ARRAY_STORAGE.get(uuid));
                     break;
                 case "clear":
@@ -109,5 +80,4 @@ public class MainArray {
         }
         System.out.println("----------------------------");
     }
-
 }

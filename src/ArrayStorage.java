@@ -1,69 +1,60 @@
+//package ru.javawebinar.basejava.storage;
+
+//import ru.javawebinar.basejava.model.Resume;
+
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+public class ArrayStorage extends AbstractArrayStorage {
 
-    //добавлю переменную - в которой буду хранить колич значимых элементов в массиве (храниим от 0 до size)
-    private int size = 0;  // меняем только из методов!
-
-    void clear() {
-        //for (int i = 0; i< size; i++) storage[i] = null;
-        Arrays.fill(storage, 0,size,null);
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    void save(Resume r) {
-        if (size > storage.length) {
-            System.out.println("база данных заполнена. невозможно записать!");
-         return;
+    public void update(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index == -1) {
+            System.out.println("Resume " + r.getUuid() + " not exist");
+        } else {
+            storage[index] = r;
         }
-        storage[size] = r;  // r - ссылка на новый элемент класса Resume содержащий резюме (поле uuid)
-        size++;
-    }
-    void update(int i, Resume rNew){
-        storage[i]=rNew;
     }
 
-    int getInt(String uuid) {
-        //ищем знач массива, если нет - вернем минус один ?
+    public void save(Resume r) {
+        if (getIndex(r.getUuid()) != -1) {
+            System.out.println("Resume " + r.getUuid() + " already exist");
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("Storage overflow");
+        } else {
+            storage[size] = r;
+            size++;
+        }
+    }
+
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index == -1) {
+            System.out.println("Resume " + uuid + " not exist");
+        } else {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+        }
+    }
+
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
+
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (uuid.equals(storage[i].getUuid())) {
                 return i;
             }
         }
         return -1;
     }
-
-    Resume get(String uuid) {
-        int i = getInt(uuid);
-        return (i==-1)?null:storage[i];
-    }
-
-    void delete(String uuid) {
-        // при удалении элемента заменяем стираемую ссылку элементом с вершины данных
-        int index = getInt(uuid);
-        if (index == -1) {
-            // элемент не найден
-        } else {
-            storage[index] = storage[size -1];
-            --size;
-        }
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    Resume[] getAll() {
-        Resume[] returnResume = new Resume[size];   // ВОПРОС при каждом вызове создавать массив через new - правильно?
-        System.arraycopy(storage, 0, returnResume, 0, size);
-        return returnResume;
-    }
-
-    int size() {
-        return size; //тут просто )
-    }
-
 }
