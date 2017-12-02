@@ -5,23 +5,8 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-public class SortedArrayStorage extends AbstractArrayStorage{
-    @Override
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);  //копия метода из несортированного  массива
-        size = 0;
-    }
+public class SortedArrayStorage extends AbstractArrayStorage {
 
-    @Override
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());  //копия метода из несортированного массива
-        if (index < 0) {
-            System.out.println("Resume " + r.getUuid() + " not exist");
-        } else {
-            storage[index] = r;  // не понимаю смысла перезаписывать uuid самим собой?! если бы был новый ууид - то
-                                 // после надо было бы передвинуть элемент чтобы сохраниить сортировку! А тут просто копия метода из несортированного массива
-        }
-    }
 
     @Override
     public void save(Resume r) {
@@ -31,10 +16,10 @@ public class SortedArrayStorage extends AbstractArrayStorage{
         } else if (size >= STORAGE_LIMIT) {
             System.out.println("Storage overflow");
         } else {
-            int pointOfInsert=-index-1;
+            int pointOfInsert = -index - 1;
             // двигаем массив
-            for (int i=size;i>pointOfInsert;i--) {
-             storage[i]=storage[i-1];
+            for (int i = size; i > pointOfInsert; i--) {
+                storage[i] = storage[i - 1];
             }
             storage[pointOfInsert] = r;
             size++;
@@ -44,22 +29,16 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0 ) {
+        if (index < 0) {
             System.out.println("Resume " + uuid + " not exist");
         } else {
             //сдвигаем массив для сохранения сортировки
-            for (int i=index; i<size; i++) {
-                storage[i] = storage[i+1];
+            for (int i = index; i < size; i++) {
+                storage[i] = storage[i + 1];
             }
             storage[size - 1] = null;
-             size--;
+            size--;
         }
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);  // копия метода из несортированного массива
-      //  return new ru.javawebinar.basejava.model.Resume[0];
     }
 
     // Вопрос: методы: update/clear/getAll скопированы "один в один из класса" - ru.javawebinar.basejava.storage.ArrayStorage, не пониимаю почему нельзя в Абстрактном родителе это прописать статично?
