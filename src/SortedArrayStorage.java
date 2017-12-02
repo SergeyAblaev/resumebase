@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage{
     @Override
     public void clear() {
-        Arrays.fill(storage, 0, size, null);  //копия метода из несортированного массива
+        Arrays.fill(storage, 0, size, null);  //копия метода из несортированного  массива
         size = 0;
     }
 
