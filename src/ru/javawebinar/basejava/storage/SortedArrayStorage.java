@@ -1,6 +1,7 @@
-//package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage;
 
-//import ru.javawebinar.basejava.model.Resume;
+
+import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
@@ -14,7 +15,7 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     @Override
     public void update(Resume r) {
         int index = getIndex(r.getUuid());  //копия метода из несортированного массива
-        if (index == -1) {
+        if (index < 0) {
             System.out.println("Resume " + r.getUuid() + " not exist");
         } else {
             storage[index] = r;  // не понимаю смысла перезаписывать uuid самим собой?! если бы был новый ууид - то
@@ -58,10 +59,10 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);  // копия метода из несортированного массива
-      //  return new Resume[0];
+      //  return new ru.javawebinar.basejava.model.Resume[0];
     }
 
-    // Вопрос: методы: update/clear/getAll скопированы "один в один из класса" - ArrayStorage, не пониимаю почему нельзя в Абстрактном родителе это прописать статично?
+    // Вопрос: методы: update/clear/getAll скопированы "один в один из класса" - ru.javawebinar.basejava.storage.ArrayStorage, не пониимаю почему нельзя в Абстрактном родителе это прописать статично?
 
     @Override
     protected int getIndex(String uuid) {
