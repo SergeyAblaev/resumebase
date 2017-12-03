@@ -20,22 +20,34 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index == -1) {
-            System.out.println("Resume " + r.getUuid() + " not exist");
-        } else {
+        int index=verificationOfAbsence(r.getUuid());
+        if (index >= 0) {
             storage[index] = r;
         }
     }
 
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("Resume " + uuid + " not exist");
-            return null;
+    public void save(Resume r) { //not sorted
+        int index = availabilityCheck(r.getUuid());
+        if (index < 0) {
+            saveElement( r,  index);
         }
-        return storage[index];
     }
+
+    public Resume get(String uuid) {
+        int index = verificationOfAbsence(uuid);
+        if (index >= 0) {
+            return storage[index];
+        }
+        return null;
+    }
+
+    public void delete(String uuid) {
+        int index = verificationOfAbsence(uuid);
+        if (index >=0){
+        deleteElement(index);
+        }
+    }
+
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
@@ -43,6 +55,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public int size() {
         return size;
     }
+
+    abstract void saveElement(Resume r, int index);
+    abstract void deleteElement(int index);
 
     int availabilityCheck(String uuid){
         int index = getIndex(uuid);

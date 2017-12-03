@@ -11,22 +11,16 @@ import java.util.Arrays;
 public class ArrayStorage extends AbstractArrayStorage {
 
 
-    public void save(Resume r) {
-        if (availabilityCheck(r.getUuid()) < 0) {
-            storage[size] = r;
-            size++;
-        }
+    void saveElement(Resume r, int index){
+        storage[size] = r;
+        size++;
     }
 
-    public void delete(String uuid) {
-        int index = verificationOfAbsence(uuid);
-        if (index >=0){
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        }
+    void deleteElement(int index){
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
-
 
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
