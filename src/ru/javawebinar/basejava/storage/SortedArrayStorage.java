@@ -7,15 +7,10 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-
     @Override
     public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            System.out.println("Resume " + r.getUuid() + " already exist");
-        } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
-        } else {
+        int index = availabilityCheck(r.getUuid());
+        if (index < 0) {
             int pointOfInsert = -index - 1;
             // двигаем массив
             for (int i = size; i > pointOfInsert; i--) {
@@ -28,10 +23,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            System.out.println("Resume " + uuid + " not exist");
-        } else {
+        int index = verificationOfAbsence(uuid);
+        if (index >=0){
             //сдвигаем массив для сохранения сортировки
             for (int i = index; i < size; i++) {
                 storage[i] = storage[i + 1];
@@ -40,8 +33,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             size--;
         }
     }
-
-    // Вопрос: методы: update/clear/getAll скопированы "один в один из класса" - ru.javawebinar.basejava.storage.ArrayStorage, не пониимаю почему нельзя в Абстрактном родителе это прописать статично?
 
     @Override
     protected int getIndex(String uuid) {
