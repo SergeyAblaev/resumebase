@@ -7,23 +7,16 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    void saveElement(Resume r, int index){
+    void saveElement(Resume r, int index) {
         int pointOfInsert = -index - 1;
         // двигаем массив
-        for (int i = size; i > pointOfInsert; i--) {
-            storage[i] = storage[i - 1];
-        }
+        System.arraycopy(storage, pointOfInsert, storage, pointOfInsert + 1, size - pointOfInsert);
         storage[pointOfInsert] = r;
-        size++;
     }
 
-    void deleteElement(int index){ //sort
+    void deleteElement(int index) { //sort
         //сдвигаем массив для сохранения сортировки
-        for (int i = index; i < size; i++) {
-            storage[i] = storage[i + 1];
-        }
-        storage[size - 1] = null;
-        size--;
+        System.arraycopy(storage, index + 1, storage, index, size - index);
     }
 
     protected int getIndex(String uuid) {

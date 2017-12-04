@@ -11,15 +11,12 @@ import java.util.Arrays;
 public class ArrayStorage extends AbstractArrayStorage {
 
 
-    void saveElement(Resume r, int index){
+    void saveElement(Resume r, int index) {
         storage[size] = r;
-        size++;
     }
 
-    void deleteElement(int index){
+    void deleteElement(int index) {
         storage[index] = storage[size - 1];
-        storage[size - 1] = null;
-        size--;
     }
 
     protected int getIndex(String uuid) {
