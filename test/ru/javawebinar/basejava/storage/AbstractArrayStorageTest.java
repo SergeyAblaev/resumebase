@@ -8,12 +8,15 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractArrayStorageTest {
+    protected Storage storage;
+    private static final String UUID_1 = "uuid1";
+    private static final String UUID_2 = "uuid2";
+    private static final String UUID_3 = "uuid3";
+    private static final String DUMMY = "dummy";
 
-    protected Storage storage = new ArrayStorage();
-        private static final String UUID_1 = "uuid1";
-        private static final String UUID_2 = "uuid2";
-        private static final String UUID_3 = "uuid3";
-        private static final String DUMMY = "dummy";
+    protected AbstractArrayStorageTest(Storage storage) {
+        this.storage = storage;
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -36,11 +39,14 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() throws Exception {
-        storage.update(storage.get(UUID_2));  // Не понял - что тут можно проверить, кроме выполнения апдейта? массив не меняется.
+        Resume r=storage.get(UUID_2);
+        if (r.getUuid().equals(UUID_2)){
+            storage.update(r);
+        }
     }
 
 
-    @Test (expected = NotExistStorageException.class)
+    @Test(expected = NotExistStorageException.class)
     public void notExistUpdate() throws Exception {
         storage.update(storage.get(DUMMY));
     }
@@ -53,9 +59,12 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void save() throws Exception {
-        storage.save(new Resume());
+        Resume r = new Resume();
+        storage.save(r);
         Resume resume[] = storage.getAll();
         Assert.assertEquals(4, resume.length);
+        Assert.assertEquals(storage.get(r.getUuid()),r); //save можно еще проверить, что 4-ое действительно добавилось,
+        // а не просто размер на 1 увеличился   - а по моему тут "масло масляное" получилось )
     }
 
     @Test
@@ -67,7 +76,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() throws Exception {
-        Assert.assertEquals(storage.get(UUID_2).getUuid(),UUID_2);
+        Assert.assertEquals(storage.get(UUID_2).getUuid(), UUID_2);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -76,14 +85,19 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = StorageException.class)
-    public void overflow() throws Exception {
+    public void saveOverFlow() throws Exception {
         Resume r;
-        for (int i=1;i<=(11000);i++){
-           r=new Resume();
+        try {
+            for (int i = 1; i <= (10000 - 3); i++) {
+                r = new Resume();
                 storage.save(r);
+            }
+        } catch (Exception e) {
+            System.out.println("size=" + storage.size() + "  " + e.toString());
+            throw new IndexOutOfBoundsException();
         }
-        r=new Resume();
-        storage.save(r);
+        r = new Resume();
+        storage.save(r);  // and this is for a perceived mistake
     }
 
 }
