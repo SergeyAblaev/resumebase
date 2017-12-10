@@ -21,4 +21,3 @@ public class MainReflection {
         System.out.println(method.invoke(r));
     }
 }
-// comment from desctop 101217 18:39  desc коррект
