@@ -21,4 +21,4 @@ public class MainReflection {
         System.out.println(method.invoke(r));
     }
 }
-// comment from desctop 101217 18:29 desctop correct
+// comment from desctop 101217 18:29  ноут коррект
