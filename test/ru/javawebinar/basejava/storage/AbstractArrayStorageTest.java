@@ -93,8 +93,8 @@ public abstract class AbstractArrayStorageTest {
                 storage.save(r);
             }
         } catch (Exception e) {
-            System.out.println("size=" + storage.size() + "  " + e.toString());
-            throw new IndexOutOfBoundsException();
+            Assert.fail("size=" + storage.size() + "  " + e.toString());
+            //throw new IndexOutOfBoundsException();
         }
         r = new Resume();
         storage.save(r);  // and this is for a perceived mistake
