@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.ListStorage;
 
 import java.util.*;
 
@@ -18,10 +19,10 @@ public class MainCollections {
     private static final Resume RESUME_4 = new Resume(UUID_4);
 
     public static void main(String[] args) {
-        Collection<Resume> collection = new ArrayList<>();
-        collection.add(RESUME_1);
+        Collection<Resume> collection = new ListStorage();
+        /*collection.add(RESUME_1);
         collection.add(RESUME_2);
-        collection.add(RESUME_3);
+        collection.add(RESUME_3);*/
 
         for (Resume r : collection) {
             System.out.println(r);
