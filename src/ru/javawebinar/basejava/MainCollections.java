@@ -19,12 +19,12 @@ public class MainCollections {
     private static final Resume RESUME_4 = new Resume(UUID_4);
 
     public static void main(String[] args) {
-        Collection<Resume> collection = new ListStorage();
+        ListStorage listStorage = new ListStorage();
         /*collection.add(RESUME_1);
         collection.add(RESUME_2);
         collection.add(RESUME_3);*/
 
-        for (Resume r : collection) {
+        for (Resume r : listStorage.getAll()) {
             System.out.println(r);
             if (Objects.equals(r.getUuid(), UUID_1)) {
 //                collection.remove(r);
