@@ -1,16 +1,17 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.*;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class ListStorage extends AbstractStorage {
-    protected Collection<Resume> collection = new ArrayList<>();
+    public Collection<Resume> collection = new ArrayList<>();
 
     @Override
     public void clear() {
-    collection.clear();
+        collection.clear();
     }
 
     @Override
@@ -20,16 +21,24 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void save(Resume r) {   // todo do method! где можно не проверять на наличие в МАП или в ЛИСТ?
-        collection.add(r);
+        if (collection.contains(r)) {
+            throw new ExistStorageException(r.toString());
+        } else {
+            collection.add(r);
+        }
+
     }
 
     @Override
     public Resume get(String uuid) {  // todo do method! get
+        collection.
         return null;
     }
 
     @Override
     public void delete(String uuid) {   // todo do method! delete
+        int indexx=collection.
+        collection.remove(r);
 
     }
 
@@ -43,7 +52,7 @@ public class ListStorage extends AbstractStorage {
         return 0;           // todo do method! size
     }
 
-    protected int getIndex(Resume r){
+    protected int getIndex(Resume r) {
         boolean rrr = collection.contains(r);  // todo correct method! getIndex
         return Int(rrr);
     }
