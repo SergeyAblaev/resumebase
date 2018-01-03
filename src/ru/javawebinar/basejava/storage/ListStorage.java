@@ -4,7 +4,6 @@ import ru.javawebinar.basejava.exception.*;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
-//import java.util.Collection;
 
 public class ListStorage extends AbstractStorage {
     // public Collection<Resume> collection = new ArrayList<>();  - Collection<Resume> - часть методов не работает! (indexOf)
