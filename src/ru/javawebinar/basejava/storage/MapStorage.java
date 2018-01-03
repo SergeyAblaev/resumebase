@@ -5,9 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    public MapStorage (){
-       // super(new Map<String,Resume>());
-    }
+    public MapStorage collection = new MapStorage(); //Resume
 
     @Override
     public void clear() {
@@ -15,22 +13,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
-
-    }
-
-    @Override
     public void save(Resume r) {
-
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        return null;
-    }
-
-    @Override
-    public void delete(String uuid) {
 
     }
 
@@ -42,5 +25,25 @@ public class MapStorage extends AbstractStorage {
     @Override
     public int size() {
         return 0;
+    }
+
+    @Override
+    int getIndex(String uuid) {
+        return 0;
+    }
+
+    @Override
+    void insertElement(Resume r, int index) {
+
+    }
+
+    @Override
+    Resume getResume(int index) {
+        return null;
+    }
+
+    @Override
+    void deleteResume(int index) {
+
     }
 }

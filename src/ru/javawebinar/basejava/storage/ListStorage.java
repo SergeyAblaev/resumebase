@@ -4,10 +4,11 @@ import ru.javawebinar.basejava.exception.*;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collection;
+//import java.util.Collection;
 
 public class ListStorage extends AbstractStorage {
-    public Collection<Resume> collection = new ArrayList<>();
+    // public Collection<Resume> collection = new ArrayList<>();  - Collection<Resume> - часть методов не работает! (indexOf)
+    public ArrayList<Resume> collection = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -15,45 +16,57 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {  // todo do method! update
-
-    }
-
-    @Override
-    public void save(Resume r) {   // todo do method! где можно не проверять на наличие в МАП или в ЛИСТ?
-        if (collection.contains(r)) {
-            throw new ExistStorageException(r.toString());
+    public void save(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index >= 0) {
+            throw new ExistStorageException(r.getUuid());
         } else {
-            collection.add(r);
+            insertElement(r, -1);
+     //       collection.add(r);
         }
 
     }
 
     @Override
-    public Resume get(String uuid) {  // todo do method! get
-        collection.
-        return null;
-    }
-
-    @Override
-    public void delete(String uuid) {   // todo do method! delete
-        int indexx=collection.
-        collection.remove(r);
-
-    }
-
-    @Override
     public Resume[] getAll() {
-        return new Resume[0];   // todo do method getAll!
+        Resume[] a = new Resume[collection.size()];
+        return collection.toArray(a);
     }
 
     @Override
     public int size() {
-        return 0;           // todo do method! size
+        return collection.size();
     }
 
-    protected int getIndex(Resume r) {
-        boolean rrr = collection.contains(r);  // todo correct method! getIndex
-        return Int(rrr);
+    @Override
+    protected int getIndex(String uuid) {
+        for (int i = 0; i < collection.size(); i++) {
+            if (uuid.equals(collection.get(i).getUuid())) {
+                return i;
+            }
+        }
+        return -1;
     }
+
+    @Override
+    protected void insertElement(Resume r, int index){
+        if (index== -1){
+            collection.add(r);
+        } else {
+            collection.set(index, r);
+        }
+
+    }
+
+    @Override
+    void deleteResume(int index){
+        collection.remove(index);
+    }
+
+    @Override
+    Resume getResume(int index){
+        return collection.get(index);
+    }
+
+
 }

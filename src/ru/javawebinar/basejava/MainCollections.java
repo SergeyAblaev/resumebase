@@ -9,6 +9,8 @@ public class MainCollections {
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1);
 
+    private static final Resume RESUME_11 = new Resume(UUID_1);
+
     private static final String UUID_2 = "uuid2";
     private static final Resume RESUME_2 = new Resume(UUID_2);
 
@@ -19,19 +21,29 @@ public class MainCollections {
     private static final Resume RESUME_4 = new Resume(UUID_4);
 
     public static void main(String[] args) {
-        ListStorage listStorage = new ListStorage();
-        /*collection.add(RESUME_1);
-        collection.add(RESUME_2);
-        collection.add(RESUME_3);*/
+        ListStorage collectionStorage = new ListStorage();
+        collectionStorage.save(RESUME_1);
+        collectionStorage.save(RESUME_2);
+        collectionStorage.save(RESUME_3);
 
-        for (Resume r : listStorage.getAll()) {
+        for (Resume r : collectionStorage.getAll()) {
             System.out.println(r);
             if (Objects.equals(r.getUuid(), UUID_1)) {
 //                collection.remove(r);
+                collectionStorage.update(r);
+/*                collectionStorage.updateObject(r);
+                try {
+                    collectionStorage.updateString(r);
+                } catch (Throwable throwable) {
+                    System.out.println(throwable.getMessage());
+                } finally {
+
+                }*/
+
             }
         }
 
-        Iterator<Resume> iterator = collection.iterator();
+        Iterator<Resume> iterator = collectionStorage.collection.iterator();
         while (iterator.hasNext()) {
             Resume r = iterator.next();
             System.out.println(r);
@@ -39,9 +51,10 @@ public class MainCollections {
                 iterator.remove();
             }
         }
-        System.out.println(collection.toString());
+        System.out.println(collectionStorage.toString());
 
 
+/*
         Map<String, Resume> map = new HashMap<>();
         map.put(UUID_1, RESUME_1);
         map.put(UUID_2, RESUME_2);
@@ -55,5 +68,6 @@ public class MainCollections {
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
+*/
     }
 }
