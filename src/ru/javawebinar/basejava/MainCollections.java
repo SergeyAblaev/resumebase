@@ -43,7 +43,7 @@ public class MainCollections {
             }
         }
 
-        Iterator<Resume> iterator = collectionStorage.collection.iterator();
+/*        Iterator<Resume> iterator = collectionStorage.collection.iterator();
         while (iterator.hasNext()) {
             Resume r = iterator.next();
             System.out.println(r);
@@ -51,7 +51,7 @@ public class MainCollections {
                 iterator.remove();
             }
         }
-        System.out.println(collectionStorage.toString());
+        System.out.println(collectionStorage.toString());*/
 
 
 /*

@@ -23,7 +23,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
 
     public void save(Resume r) {
-        int index = getIndex(r.getUuid());
+        int index = (int) getIndex(r.getUuid());
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else if (size == STORAGE_LIMIT) {
@@ -46,14 +46,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected abstract void fillDeletedElement(int index);
-
-    //protected abstract void insertElement(Resume r, int index);
-
-    protected abstract int getIndex(String uuid);
-
-/*    protected void insertElement(Resume r, int index) {
-        storage[index] = r;
-    }*/
 
     @Override
     void deleteResume(int index) {

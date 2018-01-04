@@ -6,65 +6,65 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.ArrayList;
 
 public class ListStorage extends AbstractStorage {
-    // public Collection<Resume> collection = new ArrayList<>();  - Collection<Resume> - часть методов не работает! (indexOf)
-    public ArrayList<Resume> collection = new ArrayList<>();
+    // public Collection<Resume> storage = new ArrayList<>();  - Collection<Resume> - часть методов не работает! (indexOf)
+    public ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
-        collection.clear();
+        storage.clear();
     }
 
     @Override
     public void save(Resume r) {
-        int index = getIndex(r.getUuid());
+        int index = (int) getIndex(r.getUuid());
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            insertElement(r, -1);
-     //       collection.add(r);
+            insertElement(r, index);
         }
 
     }
 
     @Override
     public Resume[] getAll() {
-        Resume[] a = new Resume[collection.size()];
-        return collection.toArray(a);
+        Resume[] a = new Resume[storage.size()];
+        return storage.toArray(a);
     }
 
     @Override
     public int size() {
-        return collection.size();
+        return storage.size();
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        for (int i = 0; i < collection.size(); i++) {
-            if (uuid.equals(collection.get(i).getUuid())) {
+    protected Integer getIndex(String uuid) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (uuid.equals(storage.get(i).getUuid())) {
                 return i;
             }
         }
         return -1;
     }
 
-    @Override
-    protected void insertElement(Resume r, int index){
-        if (index== -1){
-            collection.add(r);
-        } else {
-            collection.set(index, r);
-        }
 
+    @Override
+    protected void setElement(Resume r, int index){
+            storage.set(index, r);      // надо вставку с заменой!
+    }
+
+    @Override
+    void insertElement(Resume r, int index) {
+        storage.add(r);
     }
 
     @Override
     void deleteResume(int index){
-        collection.remove(index);
+        storage.remove(index);
     }
 
     @Override
     Resume getResume(int index){
-        return collection.get(index);
+        return storage.get(index);
     }
 
 
