@@ -11,38 +11,38 @@ public abstract class AbstractStorage implements Storage {
     public abstract void clear();
 
     public void update(Resume r) {
-        int index = (int) getIndex(r.getUuid());
-        if (index < 0) {
+        Object searchKey = getSearchKey(r.getUuid());
+        if (isNotExist(searchKey)) {
             throw new NotExistStorageException(r.getUuid());
         } else {
-            setElement(r, index);
+            doUpdate(r, searchKey);
         }
     }
 
     public void save(Resume r) {
         String uuid = r.getUuid();
-        Object index = getIndex(uuid);  //(Integer/String)
-        if (checkIndex(index)) {
-            doSave(r, index);
+        Object searchKey = getSearchKey(uuid);  //(Integer/String)
+        if (isNotExist(searchKey)) {
+            doSave(r, searchKey);
         } else {
             throw new ExistStorageException(uuid);
         }
     }
 
     public Resume get(String uuid) {
-        int index = (int) getIndex(uuid);
-        if (index < 0) {
+        Object searchKey = getSearchKey(uuid);
+        if (isNotExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return getResume(index);
+        return getResume(searchKey);
     }
 
     public void delete(String uuid) {
-        int index = (int) getIndex(uuid);
-        if (index < 0) {
+        Object searchKey = getSearchKey(uuid);
+        if (isNotExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         } else {
-            deleteResume(index);
+            deleteResume(searchKey);
         }
     }
 
@@ -50,15 +50,15 @@ public abstract class AbstractStorage implements Storage {
 
     public abstract int size();
 
-    abstract Object getIndex(String uuid);
+    abstract Object getSearchKey(String uuid);
 
-    abstract Boolean checkIndex(Object index);
+    abstract Boolean isNotExist(Object index);
 
-    abstract void setElement(Resume r, int index);
+    abstract void doUpdate(Resume r, Object index);
 
     abstract void doSave(Resume r, Object index);
 
-    abstract Resume getResume(int index);
+    abstract Resume getResume(Object index);
 
-    abstract void deleteResume(int index);
+    abstract void deleteResume(Object index);
 }

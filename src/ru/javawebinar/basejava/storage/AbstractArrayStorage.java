@@ -23,7 +23,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
 
 /*    public void save(Resume r) {
-        int index = (int) getIndex(r.getUuid());
+        int index = (int) getSearchKey(r.getUuid());
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else if (size == STORAGE_LIMIT) {
@@ -46,7 +46,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    Boolean checkIndex(Object index) {
+    Boolean isNotExist(Object index) {
         if ((Integer) index >= 0) {
             return false;
         } else {
@@ -66,15 +66,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void fillDeletedElement(int index);
 
     @Override
-    void deleteResume(int index) {
-        fillDeletedElement(index);
+    void deleteResume(Object index) {
+        fillDeletedElement((int) index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    Resume getResume(int index) {
-        return storage[index];
+    Resume getResume(Object index) {
+        return storage[(int) index];
     }
 
     abstract void insertElement(Resume r, int index);

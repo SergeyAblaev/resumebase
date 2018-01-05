@@ -14,16 +14,6 @@ public class ListStorage extends AbstractStorage {
         storage.clear();
     }
 
-    /*
-    ок, на примере save
-    - получаем индекс //Object getIndex
-    - проверяем индекс // boolean checkIndex
-    - если невалидный кидаем искл
-    - если валидный то пытаемся сохранить // doSave
-*checkIndex, для list/array - >=0, для map - !=null
-*doSave сам подумай
-     */
-
     @Override
     public Resume[] getAll() {
         Resume[] a = new Resume[storage.size()];
@@ -36,7 +26,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Integer getIndex(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (uuid.equals(storage.get(i).getUuid())) {
                 return i;
@@ -46,7 +36,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    Boolean checkIndex(Object index) {
+    Boolean isNotExist(Object index) {
         if ((Integer)index >= 0) {
             return false;
         } else {
@@ -55,8 +45,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void setElement(Resume r, int index){
-            storage.set(index, r);      // надо вставку с заменой!
+    protected void doUpdate(Resume r, Object index){
+            storage.set((int)index, r);      // надо вставку с заменой!
     }
 
     @Override
@@ -65,13 +55,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    void deleteResume(int index){
-        storage.remove(index);
+    void deleteResume(Object index){
+        storage.remove((int)index);
     }
 
     @Override
-    Resume getResume(int index){
-        return storage.get(index);
+    Resume getResume(Object index){
+        return storage.get((int) index);
     }
 
 
