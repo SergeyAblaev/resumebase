@@ -17,10 +17,10 @@ public class ListStorage extends AbstractStorage {
     /*
     ок, на примере save
     - получаем индекс //Object getIndex
-    - проверяем индекс // boolean checkIndex
+    - проверяем индекс // boolean notExistIndex
     - если невалидный кидаем искл
     - если валидный то пытаемся сохранить // doSave
-*checkIndex, для list/array - >=0, для map - !=null
+*notExistIndex, для list/array - >=0, для map - !=null
 *doSave сам подумай
      */
 
@@ -46,17 +46,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    Boolean checkIndex(Object index) {
-        if ((Integer)index >= 0) {
-            return false;
-        } else {
-            return true;
-        }
+    Boolean notExistIndex(Object index) {
+        return ((Integer)index < 0);
     }
 
     @Override
-    protected void setElement(Resume r, int index){
-            storage.set(index, r);      // надо вставку с заменой!
+    protected void updateResume(Resume r, Object index){
+            storage.set((Integer) index, r);      // надо вставку с заменой!
     }
 
     @Override
@@ -65,13 +61,13 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    void deleteResume(int index){
-        storage.remove(index);
+    void deleteResume(Object index){
+        storage.remove((Integer) index);
     }
 
     @Override
-    Resume getResume(int index){
-        return storage.get(index);
+    Resume getResume(Object index){
+        return storage.get((Integer) index);
     }
 
 

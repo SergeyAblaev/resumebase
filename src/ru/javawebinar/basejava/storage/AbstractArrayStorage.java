@@ -46,12 +46,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    Boolean checkIndex(Object index) {
-        if ((Integer) index >= 0) {
-            return false;
-        } else {
-            return true;
-        }
+    Boolean notExistIndex(Object index) {
+        return ((Integer)index < 0);
     }
 
     @Override
@@ -63,18 +59,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size++;
     }
 
-    protected abstract void fillDeletedElement(int index);
+    protected abstract void fillDeletedElement(Integer index);
 
     @Override
-    void deleteResume(int index) {
-        fillDeletedElement(index);
+    void deleteResume(Object index) {
+        fillDeletedElement((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    Resume getResume(int index) {
-        return storage[index];
+    Resume getResume(Object index) {
+        return storage[(Integer) index];
     }
 
     abstract void insertElement(Resume r, int index);

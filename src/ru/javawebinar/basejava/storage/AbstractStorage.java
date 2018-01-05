@@ -11,18 +11,15 @@ public abstract class AbstractStorage implements Storage {
     public abstract void clear();
 
     public void update(Resume r) {
-        int index = (int) getIndex(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            setElement(r, index);
-        }
+        String uuid = r.getUuid();
+        Object index = checkGetIndex(uuid);
+            updateResume(r, index);
     }
 
     public void save(Resume r) {
         String uuid = r.getUuid();
         Object index = getIndex(uuid);  //(Integer/String)
-        if (checkIndex(index)) {
+        if (notExistIndex(index)) {
             doSave(r, index);
         } else {
             throw new ExistStorageException(uuid);
@@ -30,20 +27,21 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        int index = (int) getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
+        Object index = checkGetIndex(uuid);
         return getResume(index);
     }
 
     public void delete(String uuid) {
-        int index = (int) getIndex(uuid);
-        if (index < 0) {
+        Object index = checkGetIndex(uuid);
+        deleteResume(index);
+    }
+
+    private Object checkGetIndex(String uuid){
+        Object index = getIndex(uuid);
+        if (notExistIndex(index)) {
             throw new NotExistStorageException(uuid);
-        } else {
-            deleteResume(index);
         }
+        return index;
     }
 
     public abstract Resume[] getAll();
@@ -52,13 +50,13 @@ public abstract class AbstractStorage implements Storage {
 
     abstract Object getIndex(String uuid);
 
-    abstract Boolean checkIndex(Object index);
+    abstract Boolean notExistIndex(Object index);
 
-    abstract void setElement(Resume r, int index);
+    abstract void updateResume(Resume r, Object index);
 
     abstract void doSave(Resume r, Object index);
 
-    abstract Resume getResume(int index);
+    abstract Resume getResume(Object index);
 
-    abstract void deleteResume(int index);
+    abstract void deleteResume(Object index);
 }

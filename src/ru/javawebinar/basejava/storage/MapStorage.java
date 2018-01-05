@@ -30,18 +30,13 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    Boolean checkIndex(Object index) {
-        Resume r = storage.get((String) index);
-        if (r == null) {
-            return true;
-        } else {
-            return false;
-        }
+    Boolean notExistIndex(Object index) {
+        return ((storage.get((String) index))== null);
     }
 
     @Override
-    void setElement(Resume r, int index) {
-        doSave(r, r.getUuid());
+    void updateResume(Resume r, Object index) {
+        doSave(r, index);
     }
 
     @Override
@@ -50,12 +45,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    Resume getResume(int index) {
-        return null;
+    Resume getResume(Object index) {
+        return null; // (String) index
     }
 
     @Override
-    void deleteResume(int index) {
+    void deleteResume(Object index) {
 
     }
 }
