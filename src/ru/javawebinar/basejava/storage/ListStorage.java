@@ -14,16 +14,15 @@ public class ListStorage extends AbstractStorage {
         storage.clear();
     }
 
-    @Override
-    public void save(Resume r) {
-        int index = (int) getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            insertElement(r, index);
-        }
-
-    }
+    /*
+    ок, на примере save
+    - получаем индекс //Object getIndex
+    - проверяем индекс // boolean checkIndex
+    - если невалидный кидаем искл
+    - если валидный то пытаемся сохранить // doSave
+*checkIndex, для list/array - >=0, для map - !=null
+*doSave сам подумай
+     */
 
     @Override
     public Resume[] getAll() {
@@ -46,6 +45,14 @@ public class ListStorage extends AbstractStorage {
         return -1;
     }
 
+    @Override
+    Boolean checkIndex(Object index) {
+        if ((Integer)index >= 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     @Override
     protected void setElement(Resume r, int index){
@@ -53,7 +60,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    void insertElement(Resume r, int index) {
+    void doSave(Resume r, Object index) {
         storage.add(r);
     }
 

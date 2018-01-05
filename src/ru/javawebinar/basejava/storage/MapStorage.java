@@ -15,15 +15,6 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume r) {
-        if (storage.get(r.getUuid()) != null) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            insertElement(r, -1);
-        }
-    }
-
-    @Override
     public Resume[] getAll() {
         return new Resume[0];
     }
@@ -39,13 +30,23 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    void setElement(Resume r, int index) {
-        insertElement(r, index);
+    Boolean checkIndex(Object index) {
+        Resume r = storage.get((String) index);
+        if (r == null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    void insertElement(Resume r, int index) {
-        storage.put(r.getUuid(), r);
+    void setElement(Resume r, int index) {
+        doSave(r, r.getUuid());
+    }
+
+    @Override
+    void doSave(Resume r, Object uuid) {
+        storage.put((String) uuid, r);
     }
 
     @Override
