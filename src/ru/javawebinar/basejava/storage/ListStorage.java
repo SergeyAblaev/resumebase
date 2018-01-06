@@ -14,16 +14,6 @@ public class ListStorage extends AbstractStorage {
         storage.clear();
     }
 
-    /*
-    ок, на примере save
-    - получаем индекс //Object getIndex
-    - проверяем индекс // boolean notExistIndex
-    - если невалидный кидаем искл
-    - если валидный то пытаемся сохранить // doSave
-*notExistIndex, для list/array - >=0, для map - !=null
-*doSave сам подумай
-     */
-
     @Override
     public Resume[] getAll() {
         Resume[] a = new Resume[storage.size()];
@@ -62,7 +52,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     void deleteResume(Object index){
-        storage.remove((Integer) index);
+        storage.remove((int) index);
     }
 
     @Override
