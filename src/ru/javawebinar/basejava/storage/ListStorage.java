@@ -1,64 +1,60 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.*;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    // public Collection<Resume> storage = new ArrayList<>();  - Collection<Resume> - часть методов не работает! (indexOf)
-    public ArrayList<Resume> storage = new ArrayList<>();
+    private List<Resume> list = new ArrayList<>();
+
+    @Override
+    protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected void doUpdate(Resume r, Object searchKey) {
+        list.set((Integer) searchKey, r);
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        list.add(r);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return list.get((Integer) searchKey);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        list.remove(((Integer) searchKey).intValue());
+    }
 
     @Override
     public void clear() {
-        storage.clear();
+        list.clear();
     }
 
     @Override
     public Resume[] getAll() {
-        Resume[] a = new Resume[storage.size()];
-        return storage.toArray(a);
+        return list.toArray(new Resume[list.size()]);
     }
 
     @Override
     public int size() {
-        return storage.size();
+        return list.size();
     }
-
-    @Override
-    protected Integer getIndex(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (uuid.equals(storage.get(i).getUuid())) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    Boolean notExistIndex(Object index) {
-        return ((Integer)index < 0);
-    }
-
-    @Override
-    protected void updateResume(Resume r, Object index){
-            storage.set((Integer) index, r);      // надо вставку с заменой!
-    }
-
-    @Override
-    void doSave(Resume r, Object index) {
-        storage.add(r);
-    }
-
-    @Override
-    void deleteResume(Object index){
-        storage.remove((int) index);
-    }
-
-    @Override
-    Resume getResume(Object index){
-        return storage.get((Integer) index);
-    }
-
-
 }
