@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,17 +28,17 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        map.put((String) searchKey, r);
+        map.put((String) searchKey, r); // searchKey ==  uuid
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return null;
+        return map.get(searchKey);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-
+        map.remove(searchKey);
     }
 
     @Override
@@ -47,11 +48,22 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        return new Resume[0];
+        Resume[] resumes = new Resume[map.size()];
+        String[] uuides = map.keySet().toArray(new String[map.size()]);  //
+        Arrays.sort(uuides);
+
+        for (int i = 0; i < uuides.length; i++) {
+            resumes[i] = map.get(uuides[i]);
+        }
+/*
+       Resume[] resumes = map.values().toArray(new Resume[map.size()]);  // не работает: Геннадий убрал implements Comparable из класса Resume
+        Arrays.sort(resumes);
+*/
+        return resumes;
     }
 
     @Override
     public int size() {
-        return 0;
+        return map.size();
     }
 }
