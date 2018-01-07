@@ -1,10 +1,9 @@
 package ru.javawebinar.basejava.storage;
 
+import javafx.collections.transformation.SortedList;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 // TODO implement
 // TODO create new MapStorage with search key not uuid
@@ -47,18 +46,20 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        Resume[] resumes = new Resume[map.size()];
+    public List<Resume> getAllSorted() {
+/*
+       Resume[] resumes = map.values().toArray(new Resume[map.size()]);  // так не работает: Геннадий убрал implements Comparable из класса Resume
+        Arrays.sort(resumes);
+*/
+
+        List<Resume> resumes = new ArrayList<>();
         String[] uuides = map.keySet().toArray(new String[map.size()]);  //
         Arrays.sort(uuides);
 
         for (int i = 0; i < uuides.length; i++) {
-            resumes[i] = map.get(uuides[i]);
+         //   resumes[i] = map.get(uuides[i]);
+            resumes.add(map.get(uuides[i]));
         }
-/*
-       Resume[] resumes = map.values().toArray(new Resume[map.size()]);  // не работает: Геннадий убрал implements Comparable из класса Resume
-        Arrays.sort(resumes);
-*/
         return resumes;
     }
 

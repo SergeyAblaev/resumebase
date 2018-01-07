@@ -9,6 +9,7 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -41,8 +42,9 @@ public abstract class AbstractStorageTest {
     public void setUp() throws Exception {
         storage.clear();
         storage.save(RESUME_1);
-        storage.save(RESUME_2);
         storage.save(RESUME_3);
+        storage.save(RESUME_2);
+
     }
 
     @Test
@@ -70,11 +72,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAll() throws Exception {
-        Resume[] array = storage.getAll();
-        assertEquals(3, array.length);
-        assertEquals(RESUME_1, array[0]);
-        assertEquals(RESUME_2, array[1]);
-        assertEquals(RESUME_3, array[2]);
+        List<Resume> array = storage.getAllSorted();
+        assertEquals(3, array.size());
+        assertEquals(RESUME_1, array.get(0));
+        assertEquals(RESUME_2, array.get(1));
+        assertEquals(RESUME_3, array.get(2));
     }
 
     @Test
@@ -92,7 +94,7 @@ public abstract class AbstractStorageTest {
     @Test(expected = StorageException.class)
     public void saveOverflow() throws Exception {
         // check caller class through reflection:
-        Field field = storage.getClass().getDeclaredFields()[0];
+        Field field = storage.getClass().getDeclaredFields()[0];  //TODO при ArrayStorageTest - не работает ((
         if (!field.toString().contains("Array")) {
           throw new StorageException("This exception is correct!","");
         }
