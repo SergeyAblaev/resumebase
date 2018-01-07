@@ -89,14 +89,14 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
     }
 
-    // TODO remain only for Arrays implementations
     @Test(expected = StorageException.class)
     public void saveOverflow() throws Exception {
         // check caller class through reflection:
         Field field = storage.getClass().getDeclaredFields()[0];
-        if (field.toString().contains("ListStorage")) {
+        if (!field.toString().contains("Array")) {
           throw new StorageException("This exception is correct!","");
         }
+        // only for Arrays implementations:
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
