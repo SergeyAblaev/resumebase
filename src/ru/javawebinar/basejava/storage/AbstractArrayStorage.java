@@ -34,7 +34,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
      */
     public List<Resume> getAllSorted() {
         Resume[] a = Arrays.copyOfRange(storage, 0, size);
-      //  Arrays.sort(a);
+        // check caller class:
+        String field = getClass().getName();
+        if (!field.contains("Sorted")) {
+            Arrays.sort(a, RESUME_COMPARATOR);
+        }
         return Arrays.asList(a);
     }
 

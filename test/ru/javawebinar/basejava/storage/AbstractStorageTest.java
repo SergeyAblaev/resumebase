@@ -93,9 +93,9 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = StorageException.class)
     public void saveOverflow() throws Exception {
-        // check caller class through reflection:
-        Field field = storage.getClass().getDeclaredFields()[0];  //TODO при ArrayStorageTest - не работает ((
-        if (!field.toString().contains("Array")) {
+        // check caller class:
+        String field = storage.getClass().getName();
+        if (!field.contains("Array")) {
           throw new StorageException("This exception is correct!","");
         }
         // only for Arrays implementations:
