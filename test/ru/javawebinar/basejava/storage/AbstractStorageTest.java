@@ -101,12 +101,12 @@ public abstract class AbstractStorageTest {
         // only for Arrays implementations:
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume(String.valueOf(i)));
             }
         } catch (StorageException e) {
             Assert.fail();
         }
-        storage.save(new Resume());
+        storage.save(new Resume(""));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -134,7 +134,7 @@ public abstract class AbstractStorageTest {
     }
 
     private void assertGet(Resume r) {
-        assertEquals(r, storage.get(r.getUuid()));
+        assertEquals(r, storage.get(r.getFullName()));  //getUuid
     }
 
     private void assertSize(int size) {

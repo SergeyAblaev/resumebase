@@ -10,7 +10,8 @@ public abstract class AbstractStorage implements Storage {
     protected static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
         @Override
         public int compare(Resume o1, Resume o2) {
-            return o1.getUuid().compareTo(o2.getUuid());
+ //         return o1.getUuid().compareTo(o2.getUuid());
+            return o1.getFullName().compareTo(o2.getFullName());
         }
     };
 
@@ -27,12 +28,14 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void doDelete(Object searchKey);
 
     public void update(Resume r) {
-        Object searchKey = getExistedSearchKey(r.getUuid());
+ //     Object searchKey = getExistedSearchKey(r.getUuid());
+        Object searchKey = getExistedSearchKey(r.getFullName());
         doUpdate(r, searchKey);
     }
 
     public void save(Resume r) {
-        Object searchKey = getNotExistedSearchKey(r.getUuid());
+    //  Object searchKey = getNotExistedSearchKey(r.getUuid());
+        Object searchKey = getNotExistedSearchKey(r.getFullName());
         doSave(r, searchKey);
     }
 

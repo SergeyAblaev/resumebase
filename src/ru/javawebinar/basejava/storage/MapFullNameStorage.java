@@ -1,18 +1,17 @@
 package ru.javawebinar.basejava.storage;
 
-import javafx.collections.transformation.SortedList;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
 
 // TODO create new MapStorage with search key not uuid -- не сделал!!
-public class MapUuidStorage extends AbstractStorage {
+public class MapFullNameStorage extends AbstractStorage {
     private Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected String getSearchKey(String fullName) {  //uuid
+        return fullName;
     }
 
     @Override
@@ -27,7 +26,7 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        map.put((String) searchKey, r); // searchKey ==  uuid
+        map.put((String) searchKey, r); // searchKey ==  fullName
     }
 
     @Override
@@ -56,18 +55,6 @@ public class MapUuidStorage extends AbstractStorage {
 //next variant through TreeMap:
         TreeMap<String,Resume> mySortedMap = new TreeMap<>(map);
         return new ArrayList<>(mySortedMap.values());
-
-
-/*// how was:
-        List<Resume> resumes = new ArrayList<>();
-        String[] uuides = map.keySet().toArray(new String[map.size()]);  //
-        Arrays.sort(uuides);
-
-        for (int i = 0; i < uuides.length; i++) {
-         //   resumes[i] = map.get(uuides[i]);
-            resumes.add(map.get(uuides[i]));
-        }
-        return resumes;*/
     }
 
     @Override
