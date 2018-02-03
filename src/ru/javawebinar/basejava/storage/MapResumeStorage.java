@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-//import javafx.collections.transformation.SortedList;
 import javafx.util.Pair;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -8,12 +7,12 @@ import java.util.*;
 
 
 // TODO create new MapStorage with search key not uuid -- не сделал!!
-public class MapUuidStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     private Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected Object getSearchKey(String uuid) {  //uuid
+        return map.get(uuid);
     }
 
     @Override
@@ -22,18 +21,18 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return ((map.get((String) searchKey)) != null);
+    protected boolean isExist(Object resume) {
+        return (resume != null);
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        map.put((String) searchKey, r); // searchKey ==  uuid
+    protected void doSave(Resume r, Object resume) {
+        map.put(r.getUuid(), r);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return map.get(searchKey);
+    protected Resume doGet(Object resume) {
+        return (Resume) resume;
     }
 
     @Override
@@ -49,7 +48,7 @@ public class MapUuidStorage extends AbstractStorage {
     @Override
     protected Pair<Resume[], String> getAll() {
         Resume[] resumes = map.values().toArray(new Resume[map.size()]);
-        return new Pair<>(resumes,getClass().getName());
+        return new Pair<>(resumes, getClass().getName());
     }
 
     @Override

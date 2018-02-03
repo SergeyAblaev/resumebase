@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
+import javafx.util.Pair;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -32,14 +33,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public List<Resume> getAllSorted() {
-        Resume[] a = Arrays.copyOfRange(storage, 0, size);
-        // check caller class:
+    @Override
+    protected Pair<Resume[], String> getAll() {
+        Resume[] array = Arrays.copyOfRange(storage, 0, size);
+        // get name caller class:
         String field = getClass().getName();
-        if (!field.contains("Sorted")) {
-            Arrays.sort(a, RESUME_COMPARATOR);
-        }
-        return Arrays.asList(a);
+        return new Pair<>(array,  field);
     }
 
     @Override
@@ -72,5 +71,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void insertElement(Resume r, int index);
 
-    protected abstract Integer getSearchKey(String uuid);
+  //  protected abstract Integer getSearchKey(String uuid);
 }

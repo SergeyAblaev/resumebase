@@ -31,7 +31,7 @@ public class Resume { //implements Comparable<Resume>
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.fullName); // uuid
+        return fullName.equals(resume.fullName); // uuid
     }
 
     @Override

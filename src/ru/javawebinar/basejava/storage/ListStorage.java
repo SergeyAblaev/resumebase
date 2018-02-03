@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.storage;
 
+import com.sun.org.apache.regexp.internal.RE;
+import javafx.util.Pair;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
@@ -10,9 +12,9 @@ public class ListStorage extends AbstractStorage {
 
 
     @Override
-    protected Integer getSearchKey(String uuid) {
+    protected Integer getSearchKey(String fullName) {
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getUuid().equals(uuid)) {
+            if (list.get(i).getFullName().equals(fullName)) {  //getUuid
                 return i;
             }
         }
@@ -50,10 +52,9 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-      //  return list.toArray(new Resume[list.size()]);
-        Collections.sort(list, RESUME_COMPARATOR);
-        return list;
+    protected Pair<Resume[], String> getAll() {  //не использую - но пришлось добавить - т.к. он заявлен как абстрактный.
+        Resume[] key = list.toArray(new Resume[0]);
+        return new Pair<>(key,getClass().getName());
     }
 
     @Override

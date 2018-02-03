@@ -1,10 +1,13 @@
 package ru.javawebinar.basejava.storage;
 
+import javafx.util.Pair;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
     protected static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
@@ -27,8 +30,10 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void doDelete(Object searchKey);
 
+    protected abstract Pair<Resume[], String> getAll();
+
     public void update(Resume r) {
- //     Object searchKey = getExistedSearchKey(r.getUuid());
+    //  Object searchKey = getExistedSearchKey(r.getUuid());
         Object searchKey = getExistedSearchKey(r.getFullName());
         doUpdate(r, searchKey);
     }
@@ -63,5 +68,13 @@ public abstract class AbstractStorage implements Storage {
             throw new ExistStorageException(uuid);
         }
         return searchKey;
+    }
+    public List<Resume> getAllSorted() {
+        Pair<Resume[], String> pair = getAll(); // Return array in the "key" and className in "value"
+        Resume[] array=pair.getKey();
+        if (!pair.getValue().contains("Sorted")) {
+            Arrays.sort(array, RESUME_COMPARATOR);
+        }
+        return Arrays.asList(array);
     }
 }
