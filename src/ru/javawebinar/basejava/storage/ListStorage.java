@@ -12,9 +12,9 @@ public class ListStorage extends AbstractStorage {
 
 
     @Override
-    protected Integer getSearchKey(String fullName) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getFullName().equals(fullName)) {  //getUuid
+            if (list.get(i).getUuid().equals(uuid)) {  //getUuid
                 return i;
             }
         }

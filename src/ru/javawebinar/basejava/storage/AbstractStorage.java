@@ -33,14 +33,14 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Pair<Resume[], String> getAll();
 
     public void update(Resume r) {
-    //  Object searchKey = getExistedSearchKey(r.getUuid());
-        Object searchKey = getExistedSearchKey(r.getFullName());
+      Object searchKey = getExistedSearchKey(r.getUuid());
+    //    Object searchKey = getExistedSearchKey(r.getFullName());
         doUpdate(r, searchKey);
     }
 
     public void save(Resume r) {
-    //  Object searchKey = getNotExistedSearchKey(r.getUuid());
-        Object searchKey = getNotExistedSearchKey(r.getFullName());
+      Object searchKey = getNotExistedSearchKey(r.getUuid());
+     //   Object searchKey = getNotExistedSearchKey(r.getFullName());
         doSave(r, searchKey);
     }
 
