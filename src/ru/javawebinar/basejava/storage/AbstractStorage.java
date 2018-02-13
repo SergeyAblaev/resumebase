@@ -10,7 +10,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
-    protected static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getFullName().compareTo(o2.getFullName());
+    protected static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> {
+        int resultCompare = o1.getFullName().compareTo(o2.getFullName());
+        if (0 == resultCompare) {
+            resultCompare = o1.getUuid().compareTo(o2.getUuid());
+        }
+        return resultCompare;
+    };
 
     protected abstract Object getSearchKey(String uuid);
 
@@ -27,14 +33,14 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Resume[] getAll();
 
     public void update(Resume r) {
-      Object searchKey = getExistedSearchKey(r.getUuid());
-    //    Object searchKey = getExistedSearchKey(r.getFullName());
+        Object searchKey = getExistedSearchKey(r.getUuid());
+        //    Object searchKey = getExistedSearchKey(r.getFullName());
         doUpdate(r, searchKey);
     }
 
     public void save(Resume r) {
-      Object searchKey = getNotExistedSearchKey(r.getUuid());
-     //   Object searchKey = getNotExistedSearchKey(r.getFullName());
+        Object searchKey = getNotExistedSearchKey(r.getUuid());
+        //   Object searchKey = getNotExistedSearchKey(r.getFullName());
         doSave(r, searchKey);
     }
 
@@ -63,9 +69,10 @@ public abstract class AbstractStorage implements Storage {
         }
         return searchKey;
     }
+
     public List<Resume> getAllSorted() {
         Resume[] resume = getAll();
-        Arrays.sort(resume,RESUME_COMPARATOR);
+        Arrays.sort(resume, RESUME_COMPARATOR);
         return Arrays.asList(resume);
     }
 }
