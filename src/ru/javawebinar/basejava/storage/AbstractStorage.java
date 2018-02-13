@@ -24,7 +24,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void doDelete(Object searchKey);
 
-    protected abstract Pair<Resume[], String> getAll();
+    protected abstract Resume[] getAll();
 
     public void update(Resume r) {
       Object searchKey = getExistedSearchKey(r.getUuid());
@@ -64,11 +64,8 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
     public List<Resume> getAllSorted() {
-        Pair<Resume[], String> pair = getAll(); // Return array in the "key" and className in "value"
-        Resume[] array=pair.getKey();
-        if (!pair.getValue().contains("Sorted")) {
-            Arrays.sort(array, RESUME_COMPARATOR);
-        }
-        return Arrays.asList(array);
+        Resume[] resume = getAll();
+        Arrays.sort(resume,RESUME_COMPARATOR);
+        return Arrays.asList(resume);
     }
 }

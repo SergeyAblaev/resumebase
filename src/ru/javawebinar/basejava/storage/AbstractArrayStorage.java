@@ -34,11 +34,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     @Override
-    protected Pair<Resume[], String> getAll() {
-        Resume[] array = Arrays.copyOfRange(storage, 0, size);
-        // get name caller class:
-        String field = getClass().getName();
-        return new Pair<>(array,  field);
+    protected Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     @Override

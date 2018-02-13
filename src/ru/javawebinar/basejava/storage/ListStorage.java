@@ -52,9 +52,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Pair<Resume[], String> getAll() {  //не использую - но пришлось добавить - т.к. он заявлен как абстрактный.
-        Resume[] key = list.toArray(new Resume[0]);
-        return new Pair<>(key,getClass().getName());
+    protected Resume[] getAll() {
+        return list.toArray(new Resume[0]);
     }
 
     @Override
