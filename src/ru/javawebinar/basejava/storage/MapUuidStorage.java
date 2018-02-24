@@ -1,14 +1,10 @@
 package ru.javawebinar.basejava.storage;
 
-//import javafx.collections.transformation.SortedList;
-import javafx.util.Pair;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-
-// TODO create new MapStorage with search key not uuid -- не сделал!!
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
     private Map<String, Resume> map = new HashMap<>();
 
     @Override
@@ -17,28 +13,28 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        doSave(r, searchKey);
+    protected void doUpdate(Resume r, String uuid) {
+        map.put(uuid, r);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return ((map.get((String) searchKey)) != null);
+    protected boolean isExist(String uuid) {
+        return map.containsKey(uuid);
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        map.put((String) searchKey, r); // searchKey ==  uuid
+    protected void doSave(Resume r, String uuid) {
+        map.put(uuid, r);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return map.get(searchKey);
+    protected Resume doGet(String uuid) {
+        return map.get(uuid);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        map.remove(searchKey);
+    protected void doDelete(String uuid) {
+        map.remove(uuid);
     }
 
     @Override
@@ -47,8 +43,8 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] getAll() {
-        return map.values().toArray(new Resume[map.size()]);
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(map.values());
     }
 
     @Override

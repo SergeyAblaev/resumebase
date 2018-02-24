@@ -1,46 +1,43 @@
 package ru.javawebinar.basejava.storage;
 
-import javafx.util.Pair;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-
-// TODO create new MapStorage with search key not uuid -- не сделал!!
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
     private Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {  //uuid
-      return map.get(uuid);
-   //    return map.get(uuid).getUuid();
+    protected Resume getSearchKey(String uuid) {
+        return map.get(uuid);
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        doSave(r, searchKey);
+    protected void doUpdate(Resume r, Resume resume) {
+        map.put(r.getUuid(), r);
     }
 
     @Override
-    protected boolean isExist(Object resume) {
-        return (resume != null);
+    protected boolean isExist(Resume resume) {
+        return resume != null;
     }
 
     @Override
-    protected void doSave(Resume r, Object resume) {
-      map.put(r.getUuid(), r);
-     //   map.put(r, r.getUuid());
+    protected void doSave(Resume r, Resume resume) {
+        map.put(r.getUuid(), r);
     }
 
     @Override
-    protected Resume doGet(Object resume) {
-        return (Resume) resume;
+    protected Resume doGet(Resume resume) {
+        return resume;
     }
 
     @Override
-    protected void doDelete(Object resume) {
-        Resume rrr= (Resume) resume;
-         map.remove(rrr.getUuid());
+    protected void doDelete(Resume resume) {
+        map.remove(resume.getUuid());
     }
 
     @Override
@@ -49,8 +46,8 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] getAll() {
-        return map.values().toArray(new Resume[map.size()]);
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(map.values());
     }
 
     @Override
