@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -13,7 +14,8 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
     private final String fullName;
 
-    private Map<SectionType,AllSection> elementsResume;  //
+    private Map<SectionType,AllSection> elementsResume = new HashMap<SectionType, AllSection>() {
+    };  //
 
     public void setElementsResume(SectionType type,AllSection experience) {
         this.elementsResume.put(type,experience);
