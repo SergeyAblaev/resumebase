@@ -34,7 +34,7 @@ public class MainTestArrayStorage {
 
 
         writeResume(r3);
-        printResume(r3);
+        //printResume(r3);
 
     }
 
@@ -46,6 +46,7 @@ public class MainTestArrayStorage {
     }
 
     static  void writeResume(Resume resume){
+/*
 
         resume.setElementsResume(SectionType.ACHIEVEMENT, new TextSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven"));
        // resume.setElementsResume(SectionType.EDUCATION,new ExperienceSection());
@@ -62,6 +63,7 @@ public class MainTestArrayStorage {
             System.out.println(textSection);
         }
 
+*/
     }
 
 }
