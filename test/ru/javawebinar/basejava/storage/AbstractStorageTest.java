@@ -1,14 +1,17 @@
 package ru.javawebinar.basejava.storage;
 
+//import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -29,6 +32,36 @@ public abstract class AbstractStorageTest {
 
     static {
         RESUME_1 = new Resume(UUID_1,"name1");
+//  Начинаю заполнение резюме  RESUME_1  данными:
+      // EDUCATION
+        List<Titles> titlesList = new LinkedList<>();
+        titlesList.add(new Titles(LocalDate.parse("1993-09-01"),LocalDate.parse("1996-07-01"),"Аспирантура (программист С, С++)"));
+        titlesList.add(new Titles(LocalDate.parse("1993-09-01"),LocalDate.parse("1996-07-01"),"Аспирантура (программист С, С++)"));
+        Organization organisation = new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики","http://www.ifmo.ru/",titlesList,"");
+        List<Organization> organizations = new LinkedList<>();
+        organizations.add(organisation);
+        OrganizationSection organizationSection = new OrganizationSection(organizations);
+        RESUME_1.setSection(SectionType.EDUCATION, organizationSection);  // установили организацию в резюме1
+        // даллее так же сделай заполнение других типов секций!!
+
+     // EXPERIENCE
+        titlesList.clear();
+        titlesList.add(new Titles(LocalDate.parse("2013-10-01"),(LocalDate) null,"Автор проекта|Создание, организация и проведение Java онлайн проектов и стажировок."));
+        organisation = new Organization("Java Online Projects","http://javaops.ru/",titlesList,"");
+        organizations.clear();
+        organizations.add(organisation);
+        organizationSection = new OrganizationSection(organizations);
+        RESUME_1.setSection(SectionType.EXPERIENCE, organizationSection);  //
+
+     // ContactType
+        RESUME_1.setContact(ContactType.MOBILE,"+7(921) 855-0482");
+        RESUME_1.setContact(ContactType.SKYPE,"grigory.kislin");
+        RESUME_1.setContact(ContactType.MAIL,"gkislin@yandex.ru");
+        RESUME_1.setContact(ContactType.LINKEDIN,"https://www.linkedin.com/in/gkislin");
+        RESUME_1.setContact(ContactType.GITHUB,"https://github.com/gkislin");
+        RESUME_1.setContact(ContactType.STATCKOVERFLOW,"https://stackoverflow.com/users/548473");
+
+
         RESUME_2 = new Resume(UUID_2,"name2");
         RESUME_3 = new Resume(UUID_3,"name3");
         RESUME_4 = new Resume(UUID_4,"name4");
