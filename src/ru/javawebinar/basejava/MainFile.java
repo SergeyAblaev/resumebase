@@ -38,7 +38,7 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-  // Я не знал как вызватьиз статик метода, нестатический. Поэтому вынес рекурсию в отдельный класс.
+  // Я не знал как вызвать из статик метода, нестатический. Поэтому вынес рекурсию в отдельный not static класс.
 new RecursiveMethods();
     }
 }
