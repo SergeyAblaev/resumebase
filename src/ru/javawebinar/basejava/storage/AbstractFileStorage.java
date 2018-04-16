@@ -2,11 +2,8 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +40,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         try {
             return (int) directory.listFiles().length;
-        } catch (Exception e) {
+        } catch (SecurityException e) {
             throw new StorageException("Get size error", directory.toString(), e);
         }
     }
@@ -104,15 +101,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doDelete(File file) {
-        try {
             if (!file.delete()) {
                 throw new StorageException("File delete exception", "");
             }
-        }
-        //catch(IOException |StorageException  e){
-        catch (Exception e) {
-            throw new StorageException("FileStorage exception", "", e);
-        }
     }
 
     @Override
