@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
-    protected int size = 0;
+
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -32,20 +32,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] files = directory.listFiles();  // допустим что в каталоге только файлы для удаления!
-        String extension = "";
-
-        for (File file : files) {
-            String fileName = file.getName();
-            int i = fileName.lastIndexOf('.');
-            if (i > 0) {
-                extension = fileName.substring(i + 1);
-            }
-            if (extension.equals("otherExt"))     // можно перед удаением проверить расширение. но я не знаю какое оно, т.к. метод DoWrite не реализован.
-            {
-         //     file.delete();    // Удаление закомментил - без отладки такой код нельзя оставлять включенным :)
+        if (files != null) {
+            for (File file : files) {
+                doDelete(file);
             }
         }
-
     }
 
     @Override
@@ -64,12 +55,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doUpdate(Resume r, File file) {
-        //file.
         try {
+            doWrite(r, file);
+/*
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file.getName()));
             out.writeObject(r);
             out.flush();
             out.close();
+ */
         } catch (IOException e) {
             throw new StorageException("FileOutputStream error", file.getName(), e);
         }
@@ -94,12 +87,16 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
+    return doRead(file);
+    }
+
+    protected Resume doRead (File file) throws StorageException {
         try {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.getName()));
-            Resume r = (Resume) in.readObject();
-            in.close();
-            return r;
-        } catch (Exception e) {
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.getName()));
+        Resume r = (Resume) in.readObject();
+        in.close();
+        return r;
+        } catch ( ClassNotFoundException | IOException e) {
             throw new StorageException("FileStorage exception", "", e);
         }
 
