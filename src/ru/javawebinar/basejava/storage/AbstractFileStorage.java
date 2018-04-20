@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +28,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    public void clear() {
+    public void clear() throws StorageException {
         File[] files = directory.listFiles();  // допустим что в каталоге только файлы для удаления!
         if (files != null) {
             for (File file : files) {
                 doDelete(file);
             }
-        }
+        } else throw new StorageException("directory is empty!", "");
+
     }
 
     @Override
     public int size() {
         try {
             return (int) directory.listFiles().length;
-        } catch (SecurityException e) {
+        } catch (SecurityException | NullPointerException e) {
             throw new StorageException("Get size error", directory.toString(), e);
         }
     }
@@ -60,8 +62,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             out.flush();
             out.close();
  */
-        } catch (IOException e) {
-            throw new StorageException("FileOutputStream error", file.getName(), e);
+        } catch (IOException | SecurityException e) {
+            throw new StorageException("IO error", file.getName(), e);
         }
     }
 
@@ -72,48 +74,56 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doSave(Resume r, File file) {
-        try {
-            file.createNewFile();
-            doWrite(r, file);
-        } catch (IOException e) {
+/*        try {
+            if (file.createNewFile()){
+                doWrite(r, file);
+            }
+        } catch (IOException | SecurityException e) {
             throw new StorageException("IO error", file.getName(), e);
-        }
+        }*/
     }
 
     protected abstract void doWrite(Resume r, File file) throws IOException;
 
     @Override
     protected Resume doGet(File file) {
-    return doRead(file);
+        try {
+            return doRead(file);
+        }catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
-    protected Resume doRead (File file) throws StorageException {
+    protected Resume doRead(File file) throws IOException {
         try {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.getName()));
-        Resume r = (Resume) in.readObject();
-        in.close();
-        return r;
-        } catch ( ClassNotFoundException | IOException e) {
-            throw new StorageException("FileStorage exception", "", e);
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.getName()));
+            Resume r = (Resume) in.readObject();
+            in.close();
+            return r;
+        } catch (ClassNotFoundException e) {
+            throw new IOException("FileStorage exception", e);
         }
 
     }
 
     @Override
     protected void doDelete(File file) {
-            if (!file.delete()) {
-                throw new StorageException("File delete exception", "");
-            }
+        if (!file.delete()) {
+            throw new StorageException("File delete exception", "");
+        }
     }
 
     @Override
-    protected List<Resume> doCopyAll() {
+    protected List<Resume> doCopyAll() throws StorageException {
         //      return null;
         List<Resume> resumeList = new ArrayList<>();
         File[] files = directory.listFiles();
-        for (File file : files) {
-            resumeList.add(doGet(file));
-        }
+        if (files != null) {
+            for (File file : files) {
+                resumeList.add(doGet(file));
+            }
+
+        } else throw new StorageException("directory is empty!", "");
         return resumeList;
     }
 }
