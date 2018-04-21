@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * gkislin
+ * gkislin                  This is HW08 branch
  * 22.07.2016
  */
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
