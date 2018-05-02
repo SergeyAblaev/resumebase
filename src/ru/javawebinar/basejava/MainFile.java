@@ -33,7 +33,8 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        printDirectoryDeeply(dir);
+       // printDirectoryDeeply(dir);  Original metod
+        new RecursivePrintDir(dir);  // для отступов мне понадобился нестатический метод (из-за переменной prefix )
     }
 
     // TODO: make pretty output
@@ -49,6 +50,32 @@ public class MainFile {
                     printDirectoryDeeply(file);
                 }
             }
+        }
+    }
+
+}
+
+
+class RecursivePrintDir {
+    RecursivePrintDir(File file1) {
+        try {
+            pritDir(file1," ");
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public void pritDir(File dir, String prefix) throws Exception {   //static
+
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File name : files) {
+                System.out.println(prefix.concat(name.toString()));
+                if (name.isDirectory()) {
+                    pritDir(name, prefix.concat("  "));
+                }
+            }
+
         }
     }
 }
