@@ -4,11 +4,9 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
-public class ObjectStreamPathStorage extends AbstractPathStorage {
-    protected ObjectStreamPathStorage(String directory) {
+public class ObjectStreamFileStorage extends AbstractFileStorage {
+    protected ObjectStreamFileStorage(String directory) {                 // here must String  ?!
         super(directory);
     }
 
@@ -20,10 +18,10 @@ public class ObjectStreamPathStorage extends AbstractPathStorage {
     }
 
     @Override
-    protected Resume doRead(InputStream is) throws StorageException {
+    protected Resume doRead(InputStream is) throws IOException {
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
             return (Resume) ois.readObject();
-        } catch (ClassNotFoundException | IOException e) {
+        } catch (ClassNotFoundException e) {
             throw new StorageException("Error read resume", null, e);
         }
     }

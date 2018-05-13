@@ -4,25 +4,45 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
+import java.util.List;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
-    protected ObjectStreamStorage(File directory) {
-        super(directory);
+public class ObjectStreamStorage  {   //extends AbstractStorage
+    private AbstractStorage storageStrategy;
+
+    public void setStorageStrategy(AbstractStorage storageStrategy) {
+        this.storageStrategy = storageStrategy;  // сюда подадим лиюо AbstractPathStorage либо AbstractFileStorage
     }
 
-    @Override
-    protected void doWrite(Resume r, OutputStream os) throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
-            oos.writeObject(r);
-        }
+    public void update(Resume r) {
+        storageStrategy.update(r);
     }
 
-    @Override
-    protected Resume doRead(InputStream is) throws IOException {
-        try (ObjectInputStream ois = new ObjectInputStream(is)) {
-            return (Resume) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            throw new StorageException("Error read resume", null, e);
-        }
+    public void save(Resume r) {
+        storageStrategy.save(r);
     }
+
+    public void delete(String uuid) {
+        storageStrategy.delete(uuid);
+    }
+
+    public Resume get(String uuid) {
+        return storageStrategy.get(uuid);
+    }
+
+    public List<Resume> getAllSorted() {
+        return storageStrategy.getAllSorted();
+    }
+
+    public void clear() {
+        storageStrategy.clear();
+    }
+
+    public int size() {
+        return storageStrategy.size();
+    }
+
+/*    public void method1 (){
+     size();
+     //storageStrategy.save();
+ }*/
 }
