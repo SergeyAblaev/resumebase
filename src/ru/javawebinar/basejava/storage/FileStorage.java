@@ -12,13 +12,13 @@ import java.util.Objects;
  * gkislin
  * 22.07.2016
  */
-public class FileStorage extends AbstractStorage<File>  {
+public class FileStorage extends AbstractStorage<File> {
     private File directory;
     private StorageStrategy strategy;
 
- //   protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
+    //   protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
 
-   // protected abstract Resume doRead(InputStream is) throws IOException;
+    // protected abstract Resume doRead(InputStream is) throws IOException;
 
     protected FileStorage(String directoryString, StorageStrategy strategy) {
         this.strategy = strategy;
