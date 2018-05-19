@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.storage;
 public class ObjectStreamFileStorageTest extends AbstractStorageTest {
 
     public ObjectStreamFileStorageTest() {
-        super(new ObjectStreamFileStorage(STORAGE_DIR));  //  СДЕЛАЙ ТЕСТ!
+        super(new FileStorage(STORAGE_DIR, new ObjectStreamStorage()));  //  СДЕЛАЙ ТЕСТ!
     }
 
 }
