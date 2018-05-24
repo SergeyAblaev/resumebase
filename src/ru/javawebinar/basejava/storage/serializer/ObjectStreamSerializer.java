@@ -1,15 +1,14 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage implements StorageStrategy {
-
-/*    protected ObjectStreamPathStorage(String directory) {
-        super(directory);
-    }*/
+/**
+ * Created by val on 2017-08-05.
+ */
+public class ObjectStreamSerializer implements StreamSerializer {
 
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
@@ -19,10 +18,10 @@ public class ObjectStreamStorage implements StorageStrategy {
     }
 
     @Override
-    public Resume doRead(InputStream is) throws StorageException {
+    public Resume doRead(InputStream is) throws IOException {
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
             return (Resume) ois.readObject();
-        } catch (ClassNotFoundException | IOException e) {
+        } catch (ClassNotFoundException e) {
             throw new StorageException("Error read resume", null, e);
         }
     }
