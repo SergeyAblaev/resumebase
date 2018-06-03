@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
-public abstract class PathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
     private StorageStrategy strategy;
 
@@ -64,7 +64,10 @@ public abstract class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean isExist(Path file) {
-        return Files.exists(file);
+        if (Files.isDirectory(file)){
+            return Files.exists(file);
+        }
+        return false;
     }
 
     @Override
@@ -100,6 +103,7 @@ public abstract class PathStorage extends AbstractStorage<Path> {
     protected List<Resume> doCopyAll() {
         List<Resume> resumeList = new ArrayList<>(directory.getNameCount());
         try {
+//            Files.list(directory).map((s) -> s + "_1"); // .collect(Collectors.toList())
             List<Path> directoryList = Files.list(directory).collect(toList());
             for (Path path : directoryList) {
                 resumeList.add(doGet(path));

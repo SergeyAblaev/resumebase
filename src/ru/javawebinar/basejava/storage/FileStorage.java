@@ -30,7 +30,6 @@ public class FileStorage extends AbstractStorage<File> {
         if (!directory.canRead() || !directory.canWrite()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
-        this.directory = directory;
     }
 
     @Override
@@ -40,6 +39,8 @@ public class FileStorage extends AbstractStorage<File> {
             for (File file : files) {
                 doDelete(file);
             }
+        } else {
+            throw new StorageException("Directory is empty", null);
         }
     }
 
